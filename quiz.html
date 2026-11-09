@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Learning Adventure</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    background: linear-gradient(135deg,#b8e9ff,#fff1b8,#d9f7d6);
+    color: #30445c;
+    text-align: center;
+    min-height: 100vh;
+}
+
+header { padding: 25px 12px 10px; }
+
+h1 { color: #176b87; font-size: 32px; }
+
+.container {
+    max-width: 1050px;
+    margin: 20px auto;
+    padding: 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(135px,1fr));
+    gap: 16px;
+}
+
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 20px 10px;
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 5px 12px #7896a533;
+    transition: .2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #ffc857;
+}
+
+.emoji { font-size: 40px; display: block; }
+
+.card h3 { color: #176b87; margin: 10px 0 5px; }
+
+#subjectPage, #topicPage { display: none; }
+
+.panel {
+    background: white;
+    border-radius: 24px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+button {
+    background: #ffbd45;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.back { background: #d8efff; }
+
+footer { padding: 25px; }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌈 My Learning Adventure 🌈</h1>
+    <p>Learn • Play • Explore • Grow</p>
+</header>
+
+<div class="container">
+
+    <section id="classPage">
+        <h2>🎒 Choose Your Class</h2>
+        <div class="grid" id="classList"></div>
+    </section>
+
+    <section id="subjectPage">
+        <div class="panel">
+            <h2 id="classHeading"></h2>
+            <h3>📚 Choose Your Subject</h3>
+            <div class="grid" id="subjectList"></div>
+            <button class="back" onclick="showClasses()">⬅ Back to Classes</button>
+        </div>
+    </section>
+
+    <section id="topicPage">
+        <div class="panel">
+            <h2 id="subjectHeading"></h2>
+            <h3>⭐ Choose What You Want to Learn</h3>
+            <div class="grid" id="topicList"></div>
+            <button class="back" onclick="showSubjects()">⬅ Back to Subjects</button>
+        </div>
+    </section>
+
+</div>
+<section id="lessonPage" style="display:none;">
+    <div class="panel">
+        <h2 id="lessonTitle"></h2>
+
+        <div id="lessonContent"></div>
+
+        <button class="back" onclick="backToTopics()">
+            ⬅ Back to Topics
+        </button>
+    </div>
+</section>
+<footer>⭐ Every Child Can Learn and Shine! ⭐</footer>
+
+<script>
+    const alphabetLessons = [
+    ["A", "Apple", "🍎"], ["B", "Ball", "⚽"],
+    ["C", "Cat", "🐱"], ["D", "Dog", "🐶"],
+    ["E", "Elephant", "🐘"], ["F", "Fish", "🐟"],
+    ["G", "Grapes", "🍇"], ["H", "House", "🏠"],
+    ["I", "Ice Cream", "🍦"], ["J", "Jug", "🫗"],
+    ["K", "Kite", "🪁"], ["L", "Lion", "🦁"],
+    ["M", "Mango", "🥭"], ["N", "Nest", "🪺"],
+    ["O", "Orange", "🍊"], ["P", "Parrot", "🦜"],
+    ["Q", "Queen", "👑"], ["R", "Rabbit", "🐰"],
+    ["S", "Sun", "☀️"], ["T", "Tiger", "🐯"],
+    ["U", "Umbrella", "☂️"], ["V", "Van", "🚐"],
+    ["W", "Watch", "⌚"], ["X", "Xylophone", "🎼"],
+    ["Y", "Yak", "🐂"], ["Z", "Zebra", "🦓"]
+];
+const classNames = [
+    "Nursery","LKG","UKG","Class 1","Class 2",
+    "Class 3","Class 4","Class 5","Class 6","Class 7"
+];
+
+const emojis = ["🧸","🎈","🦋","🐰","🐼","🦁","🐬","🦄","🚀","🌍"];
+
+const subjectData = {
+    "Nursery": {
+        "ABC & English":["Alphabet A-Z","Picture Words","Simple Words"],
+        "Hindi":["स्वर","व्यंजन","चित्र पहचान"],
+        "Numbers":["Counting 1-20","Number Recognition","Shapes"],
+        "Colours & Shapes":["Colours","Basic Shapes","Object Matching"]
+    },
+    "LKG": {
+        "English":["Capital Letters","Small Letters","Phonics"],
+        "Hindi":["स्वर और व्यंजन","दो अक्षर वाले शब्द"],
+        "Maths":["Counting 1-50","Addition Basics","Shapes"],
+        "EVS":["My Family","Animals","Plants"]
+    },
+    "UKG": {
+        "English":["Phonics","Three Letter Words","Simple Sentences"],
+        "Hindi":["मात्राएँ","शब्द निर्माण","सरल वाक्य"],
+        "Maths":["Counting 1-100","Addition","Subtraction"],
+        "EVS":["Our Body","Food","Transport"]
+    },
+    "Class 1": {
+        "English":["Alphabet and Words","Sentences","Reading"],
+        "Hindi":["वर्णमाला","मात्राएँ","शब्द"],
+        "Mathematics":["Numbers","Addition","Subtraction","Shapes"],
+        "EVS":["My Family","My School","Plants and Animals"],
+        "GK":["India","Our World","General Awareness"]
+    },
+    "Class 2": {
+        "English":["Grammar Basics","Reading","Writing"],
+        "Hindi":["संज्ञा","विलोम शब्द","पठन"],
+        "Mathematics":["Place Value","Addition","Subtraction","Tables"],
+        "EVS":["Our Environment","Food","Water"],
+        "GK":["India","Famous People","Current Awareness"]
+    },
+    "Class 3": {
+        "English":["Grammar","Comprehension","Vocabulary"],
+        "Hindi":["व्याकरण","संज्ञा","सर्वनाम"],
+        "Mathematics":["Multiplication","Division","Fractions"],
+        "EVS":["Plants","Animals","Our Surroundings"],
+        "Computer":["Parts of Computer","Input and Output"],
+        "GK":["India","World","Sports"]
+    },
+    "Class 4": {
+        "English":["Grammar","Comprehension","Writing"],
+        "Hindi":["व्याकरण","विशेषण","क्रिया"],
+        "Mathematics":["Large Numbers","Factors","Geometry"],
+        "EVS":["Our Environment","Human Body","Resources"],
+        "Computer":["Computer Basics","Keyboard","Internet"],
+        "GK":["Science Facts","India","World"]
+    },
+    "Class 5": {
+        "English":["Grammar","Reading","Creative Writing"],
+        "Hindi":["व्याकरण","काल","वाक्य"],
+        "Mathematics":["Fractions","Decimals","Measurement"],
+        "EVS":["Plants and Animals","Health","Environment"],
+        "Computer":["Operating System Basics","Internet","Coding Basics"],
+        "GK":["India","World","Science"]
+    },
+    "Class 6": {
+        "English":["Grammar","Literature","Writing"],
+        "Hindi":["व्याकरण","वसंत","लेखन"],
+        "Mathematics":["Integers","Fractions","Algebra","Geometry"],
+        "Science":["Food","Materials","Living Organisms","Motion"],
+        "Social Science":["History","Geography","Civics"],
+        "Sanskrit":["शब्द परिचय","सरल वाक्य"],
+        "Computer":["Computer Fundamentals","Internet","Programming Basics"]
+    },
+    "Class 7": {
+        "English":["Grammar","Literature","Writing"],
+        "Hindi":["व्याकरण","वसंत","लेखन"],
+        "Mathematics":["Rational Numbers","Algebra","Geometry","Data Handling"],
+        "Science":["Nutrition","Heat","Motion","Electric Current"],
+        "Social Science":["History","Geography","Civics"],
+        "Sanskrit":["व्याकरण","शब्द रूप","सरल अनुवाद"],
+        "Computer":["Computer Networks","HTML Basics","Programming"]
+    }
+};
+
+let selectedClass = "";
+let selectedSubject = "";
+
+const classList = document.getElementById("classList");
+
+classNames.forEach((name,index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+        <span class="emoji">${emojis[index]}</span>
+        <h3>${name}</h3>
+        <p>Start Learning!</p>
+    `;
+    card.onclick = () => selectClass(name);
+    classList.appendChild(card);
+});
+
+function selectClass(name) {
+    selectedClass = name;
+    document.getElementById("classPage").style.display = "none";
+    document.getElementById("subjectPage").style.display = "block";
+    document.getElementById("topicPage").style.display = "none";
+
+    document.getElementById("classHeading").innerText =
+        "Welcome to " + name + "! 🎉";
+
+    const list = document.getElementById("subjectList");
+    list.innerHTML = "";
+
+    Object.keys(subjectData[name]).forEach(subject => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<span class="emoji">📘</span><h3>${subject}</h3>`;
+        card.onclick = () => selectSubject(subject);
+        list.appendChild(card);
+    });
+}
+
+function selectSubject(subject) {
+    selectedSubject = subject;
+
+    document.getElementById("subjectPage").style.display = "none";
+    document.getElementById("topicPage").style.display = "block";
+
+    document.getElementById("subjectHeading").innerText =
+        selectedClass + " • " + subject;
+
+    const list = document.getElementById("topicList");
+    list.innerHTML = "";
+
+    subjectData[selectedClass][subject].forEach(topic => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<span class="emoji">🌟</span><h3>${topic}</h3>`;
+        card.onclick = () => showLesson(topic);
+        list.appendChild(card);
+    });
+}
+
+function showClasses() {
+    document.getElementById("subjectPage").style.display = "none";
+    document.getElementById("classPage").style.display = "block";
+}
+
+function showSubjects() {
+    document.getElementById("topicPage").style.display = "none";
+    document.getElementById("subjectPage").style.display = "block";
+}
+function showLesson(topic) {
+    document.getElementById("topicPage").style.display = "none";
+    document.getElementById("lessonPage").style.display = "block";
+    document.getElementById("lessonTitle").innerText = topic;
+
+    const lessonContent = document.getElementById("lessonContent");
+
+    if (topic === "Alphabet A-Z") {
+        let html = "<h2>🌟 Learn Your ABC!</h2>";
+
+        alphabetLessons.forEach(item => {
+            html += `
+                <div style="display:inline-block;background:#fff1d6;
+                padding:15px;margin:8px;border-radius:18px;">
+                    <div style="font-size:65px;">${item[2]}</div>
+                    <h2>${item[0]} for ${item[1]}</h2>
+                    <button onclick="speakWord('${item[1]}')">
+                        🔊 Listen
+                    </button>
+                </div>
+            `;
+        });
+
+        lessonContent.innerHTML = html;
+    } else {
+        lessonContent.innerHTML = `
+            <h2>🌟 Let's Learn!</h2>
+            <p>You are learning: ${topic}</p>
+            <button onclick="speakWord('${topic}')">🔊 Listen</button>
+        `;
+    }
+}
+
+function speakWord(word) {
+    const speech = new SpeechSynthesisUtterance(word);
+    speech.lang = "en-IN";
+    speechSynthesis.cancel();
+    speechSynthesis.speak(speech);
+}
+function backToTopics() {
+    document.getElementById("lessonPage").style.display = "none";
+    document.getElementById("topicPage").style.display = "block";
+}
+</script>
+
+</body>
+</html>

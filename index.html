@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Study Mentor | Cartoon World</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Trebuchet MS",Arial,sans-serif;color:#16436d;min-height:100vh;overflow-x:hidden;background:linear-gradient(180deg,#9ce5ff,#e8faff,#fff5cc)}
+header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 6%;background:rgba(255,255,255,.88);position:relative;z-index:10;box-shadow:0 3px 15px #6dbfe533}
+.logo{font-size:21px;font-weight:bold;color:#087dc0}nav{display:flex;gap:18px;flex-wrap:wrap}nav a{text-decoration:none;color:#16436d;font-weight:bold}
+.sound-btn{border:0;border-radius:25px;padding:11px 16px;background:#087dc0;color:white;cursor:pointer;font-weight:bold}
+.hero{text-align:center;padding:45px 18px 30px;position:relative;z-index:2}.hero h1{font-size:clamp(30px,5vw,52px);color:#087dc0;text-shadow:2px 3px white}.hero p{font-size:17px;margin:15px auto;line-height:1.6}
+.characters{display:flex;justify-content:center;align-items:center;gap:35px;margin:28px auto}.character{font-size:78px;animation:bounce 2s infinite ease-in-out;filter:drop-shadow(0 7px 4px #5ca9cf66)}.character:nth-child(2){animation-delay:.4s}.character:nth-child(3){animation-delay:.8s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px) rotate(4deg)}}
+.start-btn{display:inline-block;margin-top:5px;padding:14px 28px;background:#ffcf42;color:#16436d;text-decoration:none;font-weight:bold;border-radius:30px;box-shadow:0 5px 0 #e3aa21}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;padding:30px 6%;position:relative;z-index:2}
+.card{background:rgba(255,255,255,.93);border:3px solid white;border-radius:25px;padding:27px 20px;text-align:center;box-shadow:0 8px 22px #2682b51c;transition:transform .25s}.card:hover{transform:translateY(-8px) rotate(-1deg)}
+.emoji{font-size:46px}.card h2{color:#087dc0;margin:12px 0}.card p{line-height:1.6;color:#52718a}.card a{display:inline-block;margin-top:15px;padding:10px 19px;border-radius:22px;background:#1599d1;color:white;text-decoration:none;font-weight:bold}.card a:hover{background:#087dc0}
+footer{text-align:center;padding:25px 15px;position:relative;z-index:2}
+.bubble{position:fixed;bottom:-70px;border:2px solid rgba(255,255,255,.9);border-radius:50%;background:rgba(255,255,255,.3);box-shadow:inset 3px 3px 8px white;animation:floatUp linear infinite;pointer-events:none;z-index:1}
+@keyframes floatUp{from{transform:translateY(0)}to{transform:translateY(-120vh) translateX(35px)}}
+.cloud{position:fixed;font-size:60px;opacity:.65;pointer-events:none;animation:cloudMove 25s linear infinite;z-index:1}.cloud-one{top:18%;left:-100px}.cloud-two{top:68%;left:-150px;animation-delay:9s}
+@keyframes cloudMove{from{transform:translateX(0)}to{transform:translateX(120vw)}}
+@media(max-width:650px){header{flex-wrap:wrap;justify-content:center}nav{gap:12px}.characters{gap:15px}.character{font-size:60px}}
+</style></head><body>
+<header><div class="logo">🩵 AI Study Mentor</div><nav><a href="/">Home</a><a href="/learn">Learn &amp; Explore</a><a href="/planner">Study Planner</a></nav><button class="sound-btn" id="soundBtn" type="button">🔇 Sound OFF</button></header>
+<div class="cloud cloud-one">☁️</div><div class="cloud cloud-two">☁️</div>
+<section class="hero"><h1>Welcome to Cartoon Study World! 🌈</h1><p>Study with fun, learn with smartness, and make your dreams come true!</p><div class="characters"><div class="character">🐱</div><div class="character">👦🏻</div><div class="character">🎒</div></div><a href="/learn" class="start-btn">🚀 Start Learning</a></section>
+<section class="cards">
+<div class="card"><div class="emoji">📚</div><h2>Learn &amp; Explore</h2><p>Choose your class, explore subjects and learn with fun lessons.</p><a href="/learn">Open Learning</a></div>
+<div class="card"><div class="emoji">📝</div><h2>Study Planner</h2><p>Make your daily timetable and manage your study time.</p><a href="/planner">Open Planner</a></div>
+<div class="card"><div class="emoji">🧠</div><h2>Smart Quiz</h2><p>Answer practice questions and check your score.</p><a href="/quiz">🎮 Play Quiz</a></div>
+<div class="card"><div class="emoji">📖</div><h2>My Notes</h2><p>Keep your study notes organised in one place.</p><a href="#" class="coming-soon">Coming Soon</a></div>
+<div class="card"><div class="emoji">🏆</div><h2>My Progress</h2><p>Track your learning journey and achievements.</p><a href="#" class="coming-soon">Coming Soon</a></div>
+</section><footer>Made with 🩵 for curious learners | AI Study Mentor</footer>
+<script>
+for(let i=0;i<22;i++){let b=document.createElement("div");b.className="bubble";let s=18+Math.random()*30;b.style.left=Math.random()*100+"vw";b.style.width=s+"px";b.style.height=s+"px";b.style.animationDuration=(7+Math.random()*10)+"s";b.style.animationDelay=Math.random()*8+"s";document.body.appendChild(b)}
+let soundOn=false,ctx=null,timer=null,btn=document.getElementById("soundBtn");
+function sound(){if(!soundOn||!ctx)return;let o=ctx.createOscillator(),g=ctx.createGain(),n=ctx.currentTime;o.connect(g);g.connect(ctx.destination);o.type="sine";o.frequency.setValueAtTime(650,n);o.frequency.exponentialRampToValueAtTime(1100,n+.12);g.gain.setValueAtTime(.04,n);g.gain.exponentialRampToValueAtTime(.001,n+.18);o.start(n);o.stop(n+.18)}
+btn.addEventListener("click",async()=>{try{if(!ctx){let C=window.AudioContext||window.webkitAudioContext;if(!C){alert("Your browser does not support sound.");return}ctx=new C()}if(ctx.state==="suspended")await ctx.resume();soundOn=!soundOn;if(soundOn){btn.textContent="🔊 Sound ON";sound();timer=setInterval(sound,1800)}else{btn.textContent="🔇 Sound OFF";clearInterval(timer);timer=null}}catch(e){alert("Sound could not start. Check browser settings.")}});
+document.querySelectorAll(".coming-soon").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();alert("This feature is coming soon! 🩵")}));
+</script></body></html>
